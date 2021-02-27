@@ -1,9 +1,41 @@
 <template>
-  <div>
-    <Nuxt />
+  <div class="authentication-buttons">
+    <div v-if="$auth.loggedIn">
+         {{ $auth.user.email }}
+         <button type="button"  to="/logout" class="btn btn-primary">
+            <i class="bi bi-emoji-laughing"></i>
+         </button>
+    </div>
+    <div v-else>
+      <b-button to="/login" variant="primary" @click="login">
+        <b-icon icon="arrow-up"></b-icon>
+          Login
+      </b-button>
+      <b-button variant="primary" to="/register"  @click="redirect">
+        <b-icon icon="alarm-fill"></b-icon>
+          Register
+      </b-button>
+         
+    </div>
   </div>
 </template>
+<script>
 
+
+export default {
+  components:{
+    
+  },
+  methods:{
+    login(){
+      console.log("login button pressed")
+    },
+    redirect(){
+      console.log("register button pressed")
+    }
+  }
+}
+</script>
 <style>
 html {
   font-family:

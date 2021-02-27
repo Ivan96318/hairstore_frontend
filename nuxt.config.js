@@ -18,6 +18,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -31,9 +32,47 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
-
+  bootstrapVue: {
+    icons: true //import iccons
+  },
+  axios: {
+    baseURL: 'http://127.0.0.1:8000/',
+  },
+  auth:{
+    strategies:{
+      local:{
+        endpoints:{
+          login:{
+            url:'token/login/',
+            method: 'post',
+            propertyName: 'auth_token',
+          },
+          logout:{
+            url:'token/logout/',
+            method: 'post',
+          },
+          user:{
+            url: 'accounts/api/users',
+            method: 'get',
+            propertyName: false,
+          }
+        },
+        tokenType: 'Token',
+        tokenName: 'Authorization',
+      },
+      redirect:{
+        login:'/login',
+        home:''
+      }
+    }
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+  },
+  router: {
+    middleware: ['auth'] //rutea si no esta loggeado
   }
 }
