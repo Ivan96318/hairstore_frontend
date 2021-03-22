@@ -1,26 +1,26 @@
 <template>
-  <div class="authentication-buttons">
-    <div v-if="$auth.loggedIn">
-         {{ $auth.user.email }}
-         <button type="button"  to="/logout" class="btn btn-primary">
-            <i class="bi bi-emoji-laughing"></i>
-         </button>
+  <div>
+    <div class="contain">
+      <div v-if="$auth.loggedIn" class="navbar">  
+         <b-button variant="primary" @click="loggout()"  id="logout">
+            Logout
+         </b-button>
+      </div>
+      <div v-else class="navbar">
+        <b-button  variant="primary" @click="login" id="login">
+          <b-icon icon="arrow-up" ></b-icon>
+            Login
+        </b-button>
+        <b-button variant="primary" @click="redirect" id="register">
+          <b-icon icon="alarm-fill"></b-icon>
+            Register
+        </b-button>
+      </div>
     </div>
-    <div v-else>
-      <b-button to="/login" variant="primary" @click="login">
-        <b-icon icon="arrow-up"></b-icon>
-          Login
-      </b-button>
-      <b-button variant="primary" to="/register"  @click="redirect">
-        <b-icon icon="alarm-fill"></b-icon>
-          Register
-      </b-button>
-         
-    </div>
+    <Nuxt/>
   </div>
 </template>
 <script>
-
 
 export default {
   components:{
@@ -28,11 +28,19 @@ export default {
   },
   methods:{
     login(){
-      console.log("login button pressed")
+      this.$router.push("/login")
     },
     redirect(){
-      console.log("register button pressed")
-    }
+      this.$router.push("/register")
+    },
+    async loggout(){
+      await this.$auth.logout()
+      location.reload();
+
+    },
+  },
+  mounted(){
+  
   }
 }
 </script>
@@ -55,14 +63,12 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
 }
-
 .button--green {
   display: inline-block;
   border-radius: 4px;
@@ -90,5 +96,27 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+.contain{
+  background-color:#264653; 
+  width: 100%; 
+  padding-top: 25px; 
+  padding-bottom: 25px;
+}
+.navbar{
+  position: relative;
+}
+#login{
+  right: 10px;
+  position: absolute;
+}
+#register{
+  right: 110px;
+  position: absolute;
+}
+
+#logout{
+  right: 10px;
+  position: absolute;
 }
 </style>

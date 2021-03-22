@@ -55,17 +55,19 @@ export default {
             method: 'post',
           },
           user:{
-            url: 'accounts/api/users',
+            url: 'account/api/users',
             method: 'get',
             propertyName: false,
-          }
+          },
+          
         },
         tokenType: 'Token',
         tokenName: 'Authorization',
       },
       redirect:{
-        login:'/login',
-        home:''
+        login:'/',
+        home:'/',
+        logout: '/login'
       }
     }
   },

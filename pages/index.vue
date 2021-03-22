@@ -46,8 +46,7 @@ export default {
     }
   },
   mounted(){
-    console.log("this is mounted")
-    console.log(this. $auth.loggedIn)
+    
   },
   
 }
