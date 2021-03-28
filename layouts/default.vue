@@ -1,21 +1,6 @@
 <template>
   <div>
     <div class="contain">
-      <div v-if="$auth.loggedIn" class="navbar">  
-         <b-button variant="primary" @click="loggout()"  id="logout">
-            Logout
-         </b-button>
-      </div>
-      <div v-else class="navbar">
-        <b-button  variant="primary" @click="login" id="login">
-          <b-icon icon="arrow-up" ></b-icon>
-            Login
-        </b-button>
-        <b-button variant="primary" @click="redirect" id="register">
-          <b-icon icon="alarm-fill"></b-icon>
-            Register
-        </b-button>
-      </div>
     </div>
     <Nuxt/>
   </div>
@@ -27,12 +12,6 @@ export default {
     
   },
   methods:{
-    login(){
-      this.$router.push("/login")
-    },
-    redirect(){
-      this.$router.push("/register")
-    },
     async loggout(){
       await this.$auth.logout()
       location.reload();
@@ -102,21 +81,5 @@ html {
   width: 100%; 
   padding-top: 25px; 
   padding-bottom: 25px;
-}
-.navbar{
-  position: relative;
-}
-#login{
-  right: 10px;
-  position: absolute;
-}
-#register{
-  right: 110px;
-  position: absolute;
-}
-
-#logout{
-  right: 10px;
-  position: absolute;
 }
 </style>

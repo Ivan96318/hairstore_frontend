@@ -28,7 +28,8 @@
 </template>
 <script>
 export default {
-    auth: false,
+    //auth: false,
+    layout: 'navbar',
     data(){
         return{
             form_register:{

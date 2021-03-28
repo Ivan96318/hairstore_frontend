@@ -11,6 +11,7 @@
                              <b-form-input id="password-input" type="password" v-model="userData.password"></b-form-input>
                          </b-form-group>
                          <b-button variant="success" @click="login(userData)">Login</b-button>
+                         <b-button >Olvide mi contraseña</b-button>
                      </b-form>
                  </b-card>
              </b-col>

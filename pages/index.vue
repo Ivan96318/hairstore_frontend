@@ -40,6 +40,7 @@
 
 <script>
 export default {
+  layout: 'navbar',
   data(){
     return{
 
