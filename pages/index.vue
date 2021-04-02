@@ -24,17 +24,6 @@
         </a>
       </div>
     </div>
-    <div>
-      <h1>test</h1>
-      <div v-if="$auth.loggedIn">
-        <h2>loggedo</h2>
-        {{$auth.loggedIn}}
-      </div>
-      <div v-else>
-        <h2> NO loggedo</h2>
-        <h2>{{ $auth.loggedIn}}</h2>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -47,7 +36,7 @@ export default {
     }
   },
   mounted(){
-    
+    console.log()
   },
   
 }

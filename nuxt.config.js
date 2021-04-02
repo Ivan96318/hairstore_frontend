@@ -55,7 +55,7 @@ export default {
             method: 'post',
           },
           user:{
-            url: 'account/api/users',
+            url: 'account/data/',
             method: 'get',
             propertyName: false,
           },

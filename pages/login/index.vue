@@ -8,7 +8,7 @@
                              <b-form-input id="email-input" v-model="userData.email"></b-form-input>
                          </b-form-group>
                          <b-form-group label="Password" label-for="password-input">
-                             <b-form-input id="password-input" type="password" v-model="userData.password"></b-form-input>
+                             <b-form-input id="password-input" type="password" v-model="userData.password" @keyup.enter="login(userData)"></b-form-input>
                          </b-form-group>
                          <b-button variant="success" @click="login(userData)">Login</b-button>
                          <b-button >Olvide mi contraseña</b-button>
@@ -37,7 +37,8 @@ export default {
             }catch(error){
                 this.$bvToast.toast("Email or password incorrect",{
                     variant: "danger",
-                    solid: true
+                    solid: true,
+                    title: "Error"
                 })
             }
         },
