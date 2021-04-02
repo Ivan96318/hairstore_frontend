@@ -10,7 +10,7 @@
                     <b-dropdown-item-button @click="loggout">
                         logout
                     </b-dropdown-item-button> 
-                    <b-dropdown-item-button v-if="$auth.state.user.is_admin" @click="goToAdminPage">
+                    <b-dropdown-item-button v-if="$auth.$state.user.is_admin" @click="goToAdminPage">
                         Admin
                     </b-dropdown-item-button>
                 </b-dropdown>
