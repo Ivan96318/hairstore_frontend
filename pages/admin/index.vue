@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-row align-h="around" class="row-setting">
-            <b-col cols="3" @click="goTo('/')">
+            <b-col cols="3" @click="goTo('/admin/user/')">
                 <b-card title="Usuarios" align="center" class="cursor-pointer">
                     <b-card-text>
                         <b-icon icon="person-fill" width="200px" height="200px"></b-icon>

@@ -28,8 +28,12 @@
 </template>
 
 <script>
+import Logo from '~/components/Logo'
 export default {
   layout: 'navbar',
+  components:{
+    Logo
+  },
   data(){
     return{
 
