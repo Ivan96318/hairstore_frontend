@@ -1,6 +1,6 @@
 <template>
     <div>
-        <crud :api_get="'account/api/users/'" :tableFields="fields"></crud>
+        <crud :api_get="'account/api/users/'" :tableFields="fields" :params="params" :paginate="false"></crud>
     </div>
 </template>
 <script>
@@ -19,12 +19,16 @@ export default {
                 {key: 'actions', label: 'Edit', class: 'text-center'},
                 {key: 'delete', label: 'Delete', class: 'text-ceter'}
             ],
+            params:{
+                
+            }
         }
     },
     mounted(){
-        this.$axios.get('account/api/users/').then(({data}) =>{
+       /* this.$axios.get('account/api/users/').then(({data}) =>{
             this.items = data
         })
+        */
     }
 }
 </script>

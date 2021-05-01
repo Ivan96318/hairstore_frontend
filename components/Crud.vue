@@ -9,7 +9,7 @@
     </b-row>
     <b-row class="row-table">
         <b-col class="col-table">
-            <b-table :items="dataTable" :fields="tableFields" :current-page="currentPage" :per-page="perPage">
+            <b-table :items="dataTable" :fields="tableFields" >
                 <template #cell(actions)="row">
                     <b-button @click="Edit(row.item,row.index)" variant="info">Edit</b-button>
                 </template>
@@ -21,7 +21,7 @@
     </b-row>
     <b-row>
         <b-col>
-            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" class="pagination" align="fill"></b-pagination>
+            <b-pagination v-if="paginate" v-model="currentPage" :total-rows="totalRows" :per-page="perPage" class="pagination" align="fill" @input="updateTable(currentPage)"></b-pagination>
         </b-col>
     </b-row>
   </div>
@@ -39,14 +39,32 @@ export default {
     },
     props:{
         api_get: String,
-        tableFields: Array
+        tableFields: Array,
+        params: Object,
+        paginate: Boolean
     },
     mounted(){
-        this.$axios.get(this.api_get).then(({data}) =>{
-            this.dataTable = data;
-            this.totalRows = data.length
-           
-        })
+        if(!this.paginate){
+            this.params["no_paginate"] = true
+        }
+        this.$axios.get(this.api_get,{params:this.params}).then(({data}) =>{
+            
+            if(this.paginate){
+                this.dataTable = data.data;
+                this.totalRows = data.count;
+            } else {
+                this.dataTable = data
+            }
+            
+        });
+    },
+    methods:{
+        updateTable(currentPage){
+            this.$axios.get(this.api_get,{params:{page:currentPage}}).then(({data}) =>{
+                this.dataTable = data.data;
+                this.totalRows = data.count
+            });
+        }
     }
 }
 </script>
