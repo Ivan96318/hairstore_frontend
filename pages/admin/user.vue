@@ -1,6 +1,38 @@
 <template>
     <div>
-        <crud :api_get="'account/api/users/'" :tableFields="fields" :params="params" :paginate="false"></crud>
+        <crud :api_get="'account/api/users/'" :tableFields="fields" :params="params" :paginate="true" :title="'Usuario'" ref="user_crud">
+            <template v-slot:body-modal>
+                <b-form >
+                    <b-form-group label="Nombre(s)" label-for="first-name-input">
+                        <b-form-input id="first-name-input" v-model="params.first_name" placeholder="Ingresa el nombre" :state="isFieldValid('first_name')"></b-form-input>
+                        <b-form-invalid-feedback>This field has is required</b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group label="Apellidos" label-for="last-name-input">
+                        <b-form-input id="last-name-input" v-model="params.last_name" placeholder="Ingesa los apellidos" :state="isFieldValid('last_name')"></b-form-input>
+                        <b-form-invalid-feedback>This field has is required</b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group label="Nombre de usuario" label-for="username-input">
+                        <b-form-input id="username-input" v-model="params.username" placeholder="Ingresa el nombre de usuario" :state="isFieldValid('username')"></b-form-input>
+                        <b-form-invalid-feedback>This field has is required</b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group label="Correo Electronico" label-for="email-input">
+                        <b-form-input id="email-input" v-model="params.email" placeholder="Ingresa el email" type="email" :state="isFieldValid('email')"></b-form-input>
+                        <b-form-invalid-feedback>This field has is required</b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group label="Contraseña" label-for="password-input">
+                        <b-form-input id="password-input" v-model="params.password" placeholder="Ingresa la contraseña" type="password" :state="isFieldValid('password')"></b-form-input>
+                        <b-form-invalid-feedback>This field must have at leat 5 letters</b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-checkbox v-model="params.is_admin">
+                        Es Admin
+                    </b-form-checkbox>
+                </b-form>
+            </template>
+            <template v-slot:footer-modal>
+                <b-button variant="danger" class="float-right" @click="closeModal">Cerrar</b-button>
+                <b-button variant="primary" class="float-right" @click="createUser()">Crear</b-button>
+            </template>
+        </crud>
     </div>
 </template>
 <script>
@@ -13,23 +45,49 @@ export default {
     data(){
         return{
             fields:[
+                {key:'index',label: '#', class: 'text-center'},
                 {key:'username',label: 'Usuario', class: 'text-center'},
                 {key: 'email',label:'Correo Electronico', class: 'text-center'},
                 {key: 'is_admin', label: 'Admin', class: 'text-center'},
                 {key: 'actions', label: 'Edit', class: 'text-center'},
                 {key: 'delete', label: 'Delete', class: 'text-ceter'}
             ],
+          
             params:{
-                
+                first_name:'',
+                last_name:'',
+                username:'',
+                email:'',
+                is_admin: false,
+                password: '',
+                tipo: 0
             }
         }
     },
-    mounted(){
-       /* this.$axios.get('account/api/users/').then(({data}) =>{
-            this.items = data
-        })
-        */
-    }
+    methods:{
+        async createUser(){
+            if(this.params.first_name.length > 0 && this.params.last_name.length > 0 &&
+            this.params.username.length > 0 && this.params.email.length > 0 &&
+            this.params.password.length > 4){
+                await this.$refs.user_crud.createRegister()
+                this.params.first_name = "";
+                this.params.last_name = "";
+                this.params.username = "";
+                this.params.email = "";
+                this.params.password = "";
+            }
+            
+        },
+        closeModal(){
+            this.$refs.user_crud.show_modal = false
+        },
+        isFieldValid(field){
+            if(field == "password"){
+                return this.params[field].length > 4 ? true:false;
+            }
+            return this.params[field].length > 0 ? true:false;
+        }
+    },
 }
 </script>
 <style>
