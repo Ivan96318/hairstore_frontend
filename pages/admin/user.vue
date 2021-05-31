@@ -65,18 +65,18 @@ export default {
         }
     },
     methods:{
-        async createUser(){
+        createUser(){
             if(this.params.first_name.length > 0 && this.params.last_name.length > 0 &&
             this.params.username.length > 0 && this.params.email.length > 0 &&
             this.params.password.length > 4){
-                await this.$refs.user_crud.createRegister()
+                this.$refs.user_crud.createRegister()
+                this.closeModal()
                 this.params.first_name = "";
                 this.params.last_name = "";
                 this.params.username = "";
                 this.params.email = "";
                 this.params.password = "";
             }
-            
         },
         closeModal(){
             this.$refs.user_crud.show_modal = false
@@ -88,6 +88,9 @@ export default {
             return this.params[field].length > 0 ? true:false;
         }
     },
+    mounted(){
+        this.$refs.user_crud.load()
+    }
 }
 </script>
 <style>

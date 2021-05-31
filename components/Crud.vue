@@ -60,19 +60,6 @@ export default {
         paginate: Boolean,
         title: String
     },
-    mounted(){
-        if(!this.paginate){
-            this.params["no_paginate"] = true
-        }
-        this.$axios.get(this.api_get,{params:this.params}).then(({data}) =>{
-            if(this.paginate){
-                this.dataTable = data.data;
-                this.totalRows = data.count;
-            } else {
-                this.dataTable = data
-            }
-        });
-    },
     methods:{
         //method from pagination
         updateTable(currentPage){
@@ -90,9 +77,14 @@ export default {
                 })
                 if(data.success){
                     this.load()
-                    this.show_modal = false
                 }
-            });
+            }).catch(error =>{
+                this.$bvToast.toast(error,{
+                    title: "Error",
+                    variant: 'danger',
+                    solid: true
+                })
+            })
         },
         load(){
             if(!this.paginate){
