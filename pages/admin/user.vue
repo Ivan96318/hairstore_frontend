@@ -1,6 +1,6 @@
 <template>
     <div>
-        <crud :api_get="'account/api/users/'" :tableFields="fields" :params="params" :paginate="true" :title="'Usuario'" ref="user_crud">
+        <crud :api_get="'account/api/users/'" :tableFields="fields" :params="params" :paginate="true" :title="'Usuario'" ref="user_crud" :handleOnClose="handleOnCloseModal" :modalStatus="pass_available">
             <template v-slot:body-modal>
                 <b-form >
                     <b-form-group label="Nombre(s)" label-for="first-name-input">
@@ -19,7 +19,7 @@
                         <b-form-input id="email-input" v-model="params.email" placeholder="Ingresa el email" type="email" :state="isFieldValid('email')"></b-form-input>
                         <b-form-invalid-feedback>This field has is required</b-form-invalid-feedback>
                     </b-form-group>
-                    <b-form-group label="Contraseña" label-for="password-input">
+                    <b-form-group label="Contraseña" label-for="password-input" v-if="pass_available">
                         <b-form-input id="password-input" v-model="params.password" placeholder="Ingresa la contraseña" type="password" :state="isFieldValid('password')"></b-form-input>
                         <b-form-invalid-feedback>This field must have at leat 5 letters</b-form-invalid-feedback>
                     </b-form-group>
@@ -30,7 +30,10 @@
             </template>
             <template v-slot:footer-modal>
                 <b-button variant="danger" class="float-right" @click="closeModal">Cerrar</b-button>
-                <b-button variant="primary" class="float-right" @click="createUser()">Crear</b-button>
+                <b-button variant="primary" class="float-right" @click="createUser()">{{ pass_available ? 'Crear':'Editar' }}</b-button>
+            </template>
+            <template #edit-button="{row}">
+                <b-button @click="editRegister(row.item, row.index)" variant="info">Edit</b-button>
             </template>
         </crud>
     </div>
@@ -52,7 +55,6 @@ export default {
                 {key: 'actions', label: 'Edit', class: 'text-center'},
                 {key: 'delete', label: 'Delete', class: 'text-ceter'}
             ],
-          
             params:{
                 first_name:'',
                 last_name:'',
@@ -61,7 +63,8 @@ export default {
                 is_admin: false,
                 password: '',
                 tipo: 0
-            }
+            },
+            pass_available: true,
         }
     },
     methods:{
@@ -71,21 +74,33 @@ export default {
             this.params.password.length > 4){
                 this.$refs.user_crud.createRegister()
                 this.closeModal()
-                this.params.first_name = "";
-                this.params.last_name = "";
-                this.params.username = "";
-                this.params.email = "";
-                this.params.password = "";
             }
         },
         closeModal(){
             this.$refs.user_crud.show_modal = false
+            this.params.first_name = "";
+            this.params.last_name = "";
+            this.params.username = "";
+            this.params.email = "";
+            this.params.password = "";
+            this.pass_available = true;
         },
         isFieldValid(field){
             if(field == "password"){
                 return this.params[field].length > 4 ? true:false;
             }
             return this.params[field].length > 0 ? true:false;
+        },
+        editRegister(item,index){
+            this.pass_available = false
+            this.params.first_name = item.first_name
+            this.params.last_name = item.last_name || "NA"
+            this.params.username = item.username
+            this.params.email = item.email
+            this.$refs.user_crud.show_modal = true
+        },
+        handleOnCloseModal(){
+            this.closeModal()
         }
     },
     mounted(){

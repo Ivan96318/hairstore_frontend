@@ -13,10 +13,11 @@
                 <template #cell(index)="data">
                     {{ data.index + 1 }}
                 </template>
-                <template #cell(actions)="row">
-                    <b-button @click="Edit(row.item,row.index)" variant="info">Edit</b-button>
+                 <template #cell(actions)="row">
+                     <slot name="edit-button" v-bind:row="row"></slot>
+                    <!--b-button @click="editRegister(row.item,row.index)" variant="info">Edit</b-button-->
                 </template>
-                <template #cell(delete)="row">
+                <template #cell(delete)="row" >
                     <b-button @click="Delete(row.item, row.index)" variant="danger">Delete</b-button>
                 </template>
             </b-table>         
@@ -28,9 +29,9 @@
         </b-col>
     </b-row>
     <!-- modal create -->
-    <b-modal v-model="show_modal" size="lg">
+    <b-modal v-model="show_modal" size="lg" @hidden="handleOnClose">
         <template #modal-title>
-            Crear {{ title }}
+            {{ modalStatus ? 'Crear':'Editar' }} {{ title }}
         </template>
         <div class="d-block">
             <slot name="body-modal"></slot>
@@ -58,7 +59,9 @@ export default {
         tableFields: Array,
         params: Object,
         paginate: Boolean,
-        title: String
+        title: String,
+        handleOnClose: Function,
+        modalStatus: Boolean
     },
     methods:{
         //method from pagination
@@ -98,7 +101,7 @@ export default {
                     this.dataTable = data
                 }
             });
-        },
+        }
     }
 }
 </script>
