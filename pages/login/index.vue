@@ -44,7 +44,7 @@ export default {
         },
     },
     mounted(){
-        console.log("mounted login")
+        
     }
 }
 </script>

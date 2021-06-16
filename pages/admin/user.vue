@@ -30,7 +30,7 @@
             </template>
             <template v-slot:footer-modal>
                 <b-button variant="danger" class="float-right" @click="closeModal">Cerrar</b-button>
-                <b-button variant="primary" class="float-right" @click="createUser()">{{ pass_available ? 'Crear':'Editar' }}</b-button>
+                <b-button variant="primary" class="float-right" @click="pass_available ? createUser() : editUser()">{{ pass_available ? 'Crear':'Editar' }}</b-button>
             </template>
             <template #edit-button="{row}">
                 <b-button @click="editRegister(row.item, row.index)" variant="info">Edit</b-button>
@@ -62,9 +62,11 @@ export default {
                 email:'',
                 is_admin: false,
                 password: '',
-                tipo: 0
+                tipo: 0,
+                id: 0
             },
             pass_available: true,
+            show_alert: 0
         }
     },
     methods:{
@@ -73,6 +75,13 @@ export default {
             this.params.username.length > 0 && this.params.email.length > 0 &&
             this.params.password.length > 4){
                 this.$refs.user_crud.createRegister()
+                this.closeModal()
+            }
+        },
+        editUser(){
+            if(this.params.first_name.length > 0 && this.params.last_name.length > 0 &&
+            this.params.username.length > 0 && this.params.email.length > 0){
+                this.$refs.user_crud.editRegister()
                 this.closeModal()
             }
         },
@@ -93,6 +102,7 @@ export default {
         },
         editRegister(item,index){
             this.pass_available = false
+            this.params.id = item.id
             this.params.first_name = item.first_name
             this.params.last_name = item.last_name || "NA"
             this.params.username = item.username
@@ -101,7 +111,7 @@ export default {
         },
         handleOnCloseModal(){
             this.closeModal()
-        }
+        },
     },
     mounted(){
         this.$refs.user_crud.load()

@@ -89,11 +89,30 @@ export default {
                 })
             })
         },
+        editRegister(){
+            console.log(this.params)
+            this.$axios.put(this.api_get + this.params.id +'/',this.params).then(({data}) =>{
+                this.$bvToast.toast(data.rs,{
+                    title: data.success ? "Success":"Error",
+                    variant: data.success ? 'success':'danger',
+                    solid: true
+                })
+                if(data.success){
+                    this.load()
+                }
+            }).catch(error => {
+                this.$bvToast.toast(error,{
+                    title: "Error",
+                    variant: 'danger',
+                    solid: true
+                })
+            })
+        },
         load(){
             if(!this.paginate){
                 this.params["no_paginate"] = true
             }
-            this.$axios.get(this.api_get,{params:this.params}).then(({data}) =>{
+            this.$axios.get(this.api_get ,{params:this.params}).then(({data}) =>{
                 if(this.paginate){
                     this.dataTable = data.data;
                     this.totalRows = data.count;
